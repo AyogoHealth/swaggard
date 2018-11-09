@@ -30,14 +30,14 @@ module Swaggard
         #          [List]      end_at
         #          [List]      created_at
         def parse(string)
-          data_type, name, required, description, set_string = string.match(/\A\[(\w*)\]\s*(\w*)(\(required\))?\s*(.*)\n([.\s\S]*)\Z/).captures
+          data_type, name, optional, description, set_string = string.match(/\A\[(\w*)\]\s*(\w*)(\?)?\s*(.*)\n([.\s\S]*)\Z/).captures
 
           @list_values = set_string.split('[List]').map(&:strip).reject { |string| string.empty? }
 
           @name = name
           @description = description
           @data_type = data_type.downcase
-          @is_required = required.present?
+          @is_required = !optional.present?
         end
 
       end

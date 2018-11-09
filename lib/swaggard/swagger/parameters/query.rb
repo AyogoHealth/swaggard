@@ -24,7 +24,7 @@ module Swaggard
         # Example: [Array]     status(required)  Filter by status. (e.g. status[]=1&status[]=2&status[]=3)
         # Example: [Integer]   media[media_type_id]                          ID of the desired media type.
         def parse(string)
-          data_type, name, required, options_and_description = string.match(/\A\[(\S*)\]\s*([\w\[\]]*)(\(required\))?\s*(.*)\Z/).captures
+          data_type, name, optional, options_and_description = string.match(/\A\[(\S*)\]\s*([\w\[\]]*)(\?)?\s*(.*)\Z/).captures
           allow_multiple = name.gsub!('[]', '')
 
           options, description = options_and_description.match(/\A(\[.*\])?(.*)\Z/).captures
@@ -33,7 +33,7 @@ module Swaggard
           @name = name
           @description = description
           @data_type = data_type.downcase
-          @is_required = required.present?
+          @is_required = !optional.present?
           @allow_multiple = allow_multiple.present?
           @options = options
         end

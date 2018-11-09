@@ -53,9 +53,10 @@ module Swaggard
       private
 
       class ResponseModel
-        attr_accessor :id, :response_class
+        attr_accessor :id, :required, :response_class
 
         def parse(value)
+          @required = !value.end_with?('?')
           @is_array_response = value =~ /Array/
           @response_class = if @is_array_response
                               value.match(/^Array<(.*)>$/)[1]

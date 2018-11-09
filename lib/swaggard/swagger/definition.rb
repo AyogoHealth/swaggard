@@ -16,7 +16,7 @@ module Swaggard
       def to_doc
         {
           'type'        => 'object',
-          'required'    => [],
+          'required'    => @properties.select { |prop| prop.respond_to?(:required) && prop.required }.map { |property| property.id },
           'properties'  => Hash[@properties.map { |property| [property.id, property.to_doc] }]
         }
       end

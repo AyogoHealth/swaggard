@@ -1,3 +1,5 @@
+require_relative 'type_descriptor'
+
 module Swaggard
   module Swagger
     class Response
@@ -42,7 +44,7 @@ module Swaggard
         { 'description' => description }.tap do |doc|
           schema = if @response_root.present?
                      { '$ref' => "#/definitions/#{definition.id}" }
-                   elsif @response_model.response_class.present?
+                   elsif @response_model.types.present?
                      @response_model.to_doc
                    end
 
@@ -53,35 +55,15 @@ module Swaggard
       private
 
       class ResponseModel
-        attr_accessor :id, :required, :response_class
+        attr_accessor :id, :required, :types
 
         def parse(value)
           @required = !value.end_with?('?')
-          @is_array_response = value =~ /Array/
-          @response_class = if @is_array_response
-                              value.match(/^Array<(.*)>$/)[1]
-                            else
-                              value
-                            end
+          @types = TypeDescriptor.new(value.chomp('?').split(','))
         end
 
         def to_doc
-          if @is_array_response
-            {
-              'type'  => 'array',
-              'items' => response_class_type
-            }
-          else
-            response_class_type
-          end
-        end
-
-        def response_class_type
-          if PRIMITIVE_TYPES.include?(@response_class)
-            { 'type' => @response_class }
-          else
-            { '$ref' => "#/definitions/#@response_class" }
-          end
+          @types.to_doc
         end
       end
     end

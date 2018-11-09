@@ -19,8 +19,8 @@ module Swaggard
 
       attr_reader :name
 
-      def initialize(types)
-        parse(types)
+      def initialize(type)
+        parse(type)
       end
 
       def to_doc
@@ -41,8 +41,8 @@ module Swaggard
 
       private
 
-      def parse(types)
-        parts = types.first.split(/[<>]/)
+      def parse(type)
+        parts = type.split(/[<>]/)
 
         @name = parts.last
         @is_array = parts.grep(/array/i).any?
@@ -52,7 +52,7 @@ module Swaggard
         if basic_type?
           BASIC_TYPES[@name.downcase].clone
         elsif custom_data_type?
-            Swaggard.configuration.custom_data_types[@name.downcase].clone
+          Swaggard.configuration.custom_data_types[@name.downcase].clone
         else
           { '$ref' => "#/definitions/#{name}" }
         end

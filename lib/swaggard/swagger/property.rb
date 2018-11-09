@@ -1,4 +1,4 @@
-require_relative 'type'
+require_relative 'type_descriptor'
 
 module Swaggard
   module Swagger
@@ -9,7 +9,7 @@ module Swaggard
       def initialize(yard_object)
         @id = yard_object.name.chomp('?')
         @required = !yard_object.name.end_with?('?')
-        @type = Type.new(yard_object.types)
+        @type = TypeDescriptor.new(yard_object.types)
         @description = yard_object.text
       end
 

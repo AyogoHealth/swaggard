@@ -15,7 +15,7 @@ module Swaggard
         tag = yard_object.tags.find { |t| t.tag_name == 'tag' }
 
         @name =  tag ? tag.text : "#{@controller_class.controller_path}"
-        @description = yard_object.docstring || ''
+        @description = ''
       end
 
       def to_doc

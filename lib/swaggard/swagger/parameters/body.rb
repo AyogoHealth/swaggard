@@ -1,5 +1,5 @@
 require_relative 'base'
-require_relative '../type'
+require_relative '../type_descriptor'
 
 module Swaggard
   module Swagger
@@ -58,7 +58,7 @@ module Swaggard
 
             @id = name
             @description = description
-            @type = Type.new([data_type])
+            @type = TypeDescriptor.new([data_type])
           end
 
         end

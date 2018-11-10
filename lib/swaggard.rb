@@ -54,15 +54,17 @@ module Swaggard
     def parse_controllers
       parser = Parsers::Controllers.new
 
-      Dir[configuration.controllers_path].each do |file|
-        yard_objects = get_yard_objects(file)
+      configuration.controllers_paths.each do |path|
+        Dir[path].each do |file|
+          yard_objects = get_yard_objects(file)
 
-        tag, operations = parser.run(yard_objects, routes)
+          tag, operations = parser.run(yard_objects, routes)
 
-        next unless tag
+          next unless tag
 
-        @api.add_tag(tag)
-        operations.each { |operation| @api.add_operation(operation) }
+          @api.add_tag(tag)
+          operations.each { |operation| @api.add_operation(operation) }
+        end
       end
     end
 

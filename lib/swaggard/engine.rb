@@ -16,8 +16,8 @@ module Swaggard
       app.reload_routes!
 
       Swaggard.configure do |config|
-        unless config.controllers_path
-          config.controllers_path = "#{app.root}/app/controllers/**/*.rb"
+        unless config.controllers_paths
+          config.controllers_paths = ["#{app.root}/app/controllers/**/*.rb"]
         end
 
         unless config.models_paths

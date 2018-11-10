@@ -17,10 +17,10 @@ module Swaggard
       def initialize(yard_object, tag, routes)
         @name = yard_object.name
         @tag = tag
-        @summary = yard_object.docstring.lines.first || ''
+        @summary = yard_object.docstring.summary
         @parameters  = []
         @responses = []
-        @description = (yard_object.docstring.lines[1..-1] || []).join("\n")
+        @description = format_description(yard_object.docstring)
         @formats = Swaggard.configuration.api_formats
 
         yard_object.tags.each do |yard_tag|
@@ -105,6 +105,11 @@ module Swaggard
         route[:path_params].each { |path_param| @parameters << Parameters::Path.new(path_param) }
       end
 
+
+      # Converts some RDoc-y style stuff to CommonMark Markdown for display
+      def format_description(docstring)
+        (docstring.lines[1..-1] || []).reject { |d| d =~ /--/ }.map { |d| d.gsub(/^\s*$/, "\n") }.join('').gsub(/[\+\[\]]/, '`').gsub(/^(=+)/) { |s| '#'*s.length }
+      end
     end
   end
 end

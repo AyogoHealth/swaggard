@@ -32,6 +32,15 @@ module Swaggard
       ::YARD::Tags::Library.define_tag('Response Status',  :response_status)
     end
 
+    def register_definition(dfn)
+      if instance_variable_defined?(:@api)
+        @api.definitions << dfn
+      else
+        @global_definitions ||= []
+        @global_definitions << dfn
+      end
+    end
+
     def get_doc(host)
       load!
 
@@ -49,6 +58,10 @@ module Swaggard
 
       parse_models
       parse_controllers
+
+      if instance_variable_defined?(:@global_definitions)
+        @api.definitions.concat(@global_definitions)
+      end
     end
 
     def parse_controllers

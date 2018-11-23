@@ -18,7 +18,8 @@ module Swaggard
       def definition
         return unless @response_root.present?
 
-        @definition ||= Definition.new("#{@operation_name}_response").tap do |definition|
+        wrapper = Swaggard.configuration.response_wrapper
+        @definition ||= wrapper.new("#{@operation_name}_response").tap do |definition|
           definition.add_property(@response_model)
         end
       end

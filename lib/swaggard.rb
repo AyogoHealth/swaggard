@@ -4,6 +4,7 @@ require 'yard'
 require 'swaggard/api_definition'
 require 'swaggard/configuration'
 require 'swaggard/engine'
+require 'swaggard/response_wrapper'
 
 require 'swaggard/parsers/controllers'
 require 'swaggard/parsers/models'

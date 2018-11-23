@@ -18,7 +18,8 @@ module Swaggard
                 :description, :tos, :contact_email, :contact_name, :contact_url, :host,
                 :authentication_type, :authentication_key, :authentication_value,
                 :access_username, :access_password, :default_content_type, :use_cache,
-                :language, :additional_parameters, :schemes, :custom_data_types
+                :language, :additional_parameters, :schemes, :custom_data_types,
+                :response_wrapper
 
     def swagger_version
       @swagger_version ||= '2.0'
@@ -114,6 +115,10 @@ module Swaggard
 
     def custom_data_types
       @custom_data_types ||= {}
+    end
+
+    def response_wrapper
+      @response_wrapper ||= Swaggard::ResponseWrapper
     end
   end
 end

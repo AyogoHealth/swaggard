@@ -25,7 +25,7 @@ module Swaggard
 
           doc.delete('type')
 
-          doc['required'] = false
+          doc['required'] = @is_required
           doc['schema'] = { '$ref' => "#/definitions/#{@definition.id}" }
 
           doc
@@ -52,12 +52,13 @@ module Swaggard
           # Example: [Array]     status(required)  Filter by status. (e.g. status[]=1&status[]=2&status[]=3)
           # Example: [Integer]   media[media_type_id]                          ID of the desired media type.
           def parse(string)
-            data_type, name, description = string.split
+            data_type, name, description = string.split($;, 3)
 
             data_type.gsub!('[', '').gsub!(']', '')
 
-            @id = name
+            @id = name.chomp('?')
             @description = description
+            @is_required = !name.end_with?('?')
             @type = TypeDescriptor.new([data_type])
           end
 

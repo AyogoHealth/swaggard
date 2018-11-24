@@ -14,11 +14,18 @@ module Swaggard
       end
 
       def to_doc
-        {
+        doc = {
           'type'        => 'object',
-          'required'    => @properties.select { |prop| prop.respond_to?(:required) && prop.required }.map { |property| property.id },
           'properties'  => Hash[@properties.map { |property| [property.id, property.to_doc] }]
         }
+
+        required = @properties.select { |prop| prop.respond_to?(:required) && prop.required }.map { |property| property.id }
+
+        unless required.empty?
+          doc['required'] = required
+        end
+
+        doc
       end
 
     end

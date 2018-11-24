@@ -24,11 +24,7 @@ module Swaggard
       end
 
       def to_doc
-        if @is_array
-          { 'type' => 'array', 'items' => type_tag_and_name }
-        else
-          type_tag_and_name
-        end
+        type_tag_and_name
       end
 
       def basic_type?
@@ -42,10 +38,7 @@ module Swaggard
       private
 
       def parse(type)
-        parts = type.split(/[<>]/)
-
-        @name = parts.last
-        @is_array = parts.grep(/array/i).any?
+        @name = type
       end
 
       def type_tag_and_name

@@ -1,8 +1,10 @@
 require_relative 'type'
+require_relative 'array_type'
 
 module Swaggard
   module Swagger
     class TypeDescriptor
+      attr_reader :types
 
       def initialize(types)
         parse(types)
@@ -21,7 +23,16 @@ module Swaggard
 
       def parse(types)
         @types = types.map do |type|
-          Type.new(type)
+          parts = type.split(/[<>]/)
+
+          if parts.first =~ /array/i
+            parts.slice!(0)
+            nested = parts.join('<') + ('>' * (parts.length - 1))
+
+            ArrayType.new(nested)
+          else
+            Type.new(type)
+          end
         end
       end
 

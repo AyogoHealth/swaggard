@@ -60,7 +60,7 @@ module Swaggard
 
         def parse(value)
           @required = !value.end_with?('?')
-          @types = TypeDescriptor.new(value.chomp('?').split(','))
+          @types = TypeDescriptor.new(value.chomp('?').split(/,(?![^\<]*\>)/))
         end
 
         def to_doc

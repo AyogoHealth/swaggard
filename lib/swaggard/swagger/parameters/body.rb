@@ -59,7 +59,7 @@ module Swaggard
             @id = name.chomp('?')
             @description = description
             @is_required = !name.end_with?('?')
-            @type = TypeDescriptor.new([data_type])
+            @type = TypeDescriptor.new(data_type.split(/,(?![^\<]*\>)/))
           end
 
         end

@@ -14,7 +14,19 @@ module Swaggard
             tag = Swagger::Tag.new(yard_object)
           elsif tag && yard_object.type == :method
             operation = Swagger::Operation.new(yard_object, tag, routes)
-            operations << operation if operation.valid?
+            next unless operation.valid?
+
+            if operation.http_method.include?('|')
+              methods = operation.http_method.split('|')
+              methods.each do |verb|
+                op = operation.clone
+                op.http_method = verb
+
+                operations << op
+              end
+            else
+              operations << operation
+            end
           end
         end
 

@@ -12,7 +12,7 @@ module Swaggard
   class Engine < ::Rails::Engine
     isolate_namespace Swaggard
 
-    initializer 'swaggard.finisher_hook', after: :finisher_hook do |app|
+    config.after_initialize do |app|
       app.reload_routes!
 
       Swaggard.configure do |config|
